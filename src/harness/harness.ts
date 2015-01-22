@@ -216,7 +216,7 @@ module Utils {
                         result += flags[v];
                         return false;
                     }
-                }
+}
             });
             return result;
         }
@@ -711,7 +711,7 @@ module Harness {
         default:
             throw new Error('Unknown context');
     }
-    export var tcServicesFile = IO.readFile(tcServicesFilename);
+    export var tcServicesFile = IO.readFile(tcServicesFilename) + "\n//# sourceURL=" + tcServicesFilename;
 
     export interface SourceMapEmitterCallback {
         (emittedFile: string, emittedLine: number, emittedColumn: number, sourceFile: string, sourceLine: number, sourceColumn: number, sourceName: string): void;
@@ -1043,6 +1043,9 @@ module Harness {
                             inputFiles.push({ unitName: setting.value, content: IO.readFile(libFolder + setting.value) });
                             break;
 
+                        case 'nohelpers':
+                            options.noHelpers = setting.value === 'true';
+                            break;
                         default:
                             throw new Error('Unsupported compiler setting ' + setting.flag);
                     }
@@ -1442,7 +1445,7 @@ module Harness {
         var optionRegex = /^[\/]{2}\s*@(\w+)\s*:\s*(\S*)/gm;  // multiple matches on multiple lines
 
         // List of allowed metadata names
-        var fileMetadataNames = ["filename", "comments", "declaration", "module", "nolib", "sourcemap", "target", "out", "outdir", "noemitonerror", "noimplicitany", "noresolve", "newline", "newlines", "emitbom", "errortruncation", "usecasesensitivefilenames", "preserveconstenums", "includebuiltfile", "suppressimplicitanyindexerrors"];
+        var fileMetadataNames = ["filename", "comments", "declaration", "module", "nolib", "sourcemap", "target", "out", "outdir", "noemitonerror", "noimplicitany", "noresolve", "newline", "newlines", "emitbom", "errortruncation", "usecasesensitivefilenames", "preserveconstenums", "includebuiltfile", "suppressimplicitanyindexerrors", "nohelpers"];
 
         function extractCompilerSettings(content: string): CompilerSetting[] {
 
